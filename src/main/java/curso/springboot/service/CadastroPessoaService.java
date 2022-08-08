@@ -90,7 +90,7 @@ public class CadastroPessoaService {
 
 	public void excluirPessoa(Long idPessoa) throws BusinessException, Exception {
 
-		if (!buscarPessoaPorId(idPessoa).isEmpty()) {
+		if (buscarPessoaPorId(idPessoa) != null) {
 			pessoaRepository.deleteById(idPessoa);
 		} else {
 			throw new BusinessException("O parâmetro idPessoa deve ser informado!");
@@ -134,7 +134,7 @@ public class CadastroPessoaService {
 				if (idPessoa != null) {
 					pessoa = buscarPessoaPorId(idPessoa);
 
-					if (!pessoa.isEmpty()) {
+					if (pessoa != null) {
 						telefone.setPessoa(pessoa.get());
 						return telefoneRepository.save(telefone);
 					} else {
@@ -160,7 +160,7 @@ public class CadastroPessoaService {
 
 		Optional<Telefone> telefone = buscarTelefonePorId(idTelefone);
 
-		if (!telefone.isEmpty()) {
+		if (telefone != null) {
 			telefoneRepository.deleteById(idTelefone);
 		} else {
 			throw new BusinessException("O Número de telefone não existe ou já foi excluído!");
