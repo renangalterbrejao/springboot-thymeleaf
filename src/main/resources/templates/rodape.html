@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="javascripts">
+	<!-- Compiled and minified JavaScript -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+	<!-- Script que inicializa a chamada do modal com mensagem do backend -->
+	<script th:if="${msg}">
+		document.getElementById("id01Modal").style.display = "block";
+	</script>
+
+	<!-- Script que inicializa a chamada do modal com mensagem do frontend -->
+	<script>
+		function mensagemUsuario(mensagem) {
+			document.getElementById("mensagens").innerHTML = mensagem;
+			document.getElementById("id01Modal").style.display = "block";
+		}
+		
+		function somenteNumeros(e) {
+	        var charCode = e.charCode ? e.charCode : e.keyCode;
+	        // charCode 8 = backspace   
+	        // charCode 9 = tab
+	        if (charCode != 8 && charCode != 9) {
+	            // charCode 48 equivale a 0   
+	            // charCode 57 equivale a 9
+	            if (charCode < 48 || charCode > 57) {
+	                return false;
+	            }
+	        }
+	    }
+		
+		function mask(o, f) {
+			  setTimeout(function() {
+			    var v = mphone(o.value);
+			    if (v != o.value) {
+			      o.value = v;
+			    }
+			  }, 1);
+			}
+
+		function mphone(v) {
+		  var r = v.replace(/\D/g, "");
+		  r = r.replace(/^0/, "");
+		  if (r.length > 10) {
+		    r = r.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+		  } else if (r.length > 5) {
+		    r = r.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+		  } else if (r.length > 2) {
+		    r = r.replace(/^(\d\d)(\d{0,5})/, "($1) $2");
+		  } else {
+		    r = r.replace(/^(\d*)/, "($1");
+		  }
+		  return r;
+		}
+	</script>
+</div>

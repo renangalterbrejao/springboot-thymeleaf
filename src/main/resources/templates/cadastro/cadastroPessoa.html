@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://thymeleaf.org/extras/spring-security">
+
+<div th:replace="~{cabecalho :: cabecalho}"></div>
+<div th:replace="~{cabecalho :: estilos}"></div>
+
+<body>
+
+	<div class="container-principal">
+
+		<h3>Spring Boot + Thymeleaf + Material Design Lite</h3>
+		<br />
+
+		<div th:replace="~{fragmentos :: modalPadrao(${msg})}"></div>
+
+		<fieldset>
+
+			<legend>Cadastro de Pessoas</legend>
+
+			<div class="row">
+				<form action="/salvarpessoa" method="post" th:object="${pessoaobj}"
+					class="col s12" id="formPessoa">
+
+					<div class="row">
+						<div class="input-field col s6">
+							<label for="id" class="active">ID</label> <input id="id"
+								name="id" th:field="*{id}" readonly="readonly" class="validate">
+						</div>
+						<div class="input-field col s6">
+							<label for="nome" class="active">Nome</label> <input id="nome"
+								name="nome" th:field="*{nome}" class="validate"
+								placeholder="Informe o nome da pessoa" maxlength="50">
+						</div>
+					</div>
+
+					<div class="row"
+						sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CAIXA', 'ROLE_TECNICO')">
+						<div class="input-field col s6">
+							<label for="sobrenome" class="active">Sobrenome</label> <input
+								id="sobrenome" name="sobrenome" th:field="*{sobrenome}"
+								class="validate" placeholder="Informe o sobrenome da pessoa"
+								maxlength="50">
+						</div>
+						<div class="input-field col s6">
+							<label for="idade" class="active">Idade</label> <input id="idade"
+								name="idade" th:field="*{idade}" class="validate"
+								placeholder="Informe a idade da pessoa. A idade deve ser maior ou igual a 18 anos."
+								onkeypress="return somenteNumeros(event)" maxlength="3">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="input-field col s3">
+							<label for="sexo" class="active">Sexo</label> <select
+								class="browser-default" th:field="*{sexo}">
+								<option value="" selected>--[Selecione]--</option>
+								<option value="MASCULINO" th:text="Masculino" />
+								<option value="FEMININO" th:text="Feminino" />
+							</select>
+						</div>
+						<div class="input-field col s3">
+							<label for="cargo" class="active">Cargo</label> <select
+								class="browser-default" th:field="*{cargo}">
+								<option value="" selected>--[Selecione]--</option>
+								<option th:each="cargo : ${cargos}" th:value="${cargo}"
+									th:text="${cargo.nome}">
+							</select>
+						</div>
+					</div>
+
+					<div class="row ">
+						<div class="input-field col s6">
+							<input class="btn waves-effect waves-light" type="submit"
+								value="Salvar"> <input type="button"
+								class="btn waves-effect waves-light" onclick="limparForm();"
+								value="Novo">
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+		</fieldset>
+
+		<fieldset style="margin-top: 20px">
+			<legend>Campos de Pesquisa</legend>
+			<div class="row">
+				<form action="/pesquisarpessoa" method="post" class="col s12">
+					<div class="row" style="margin-top: 20px;">
+						<div class="input-field col s6">
+							<label for="nomePesquisa" class="active">Pesquisa por
+								nome ou sobrenome:</label> <input id="nomePesquisa" name="nomePesquisa"
+								class="validate"
+								placeholder="Informe o primeiro nome da pessoa ou seu sobrenome"
+								maxlength="60" th:value="${nomePesquisa}">
+						</div>
+
+						<div class="row">
+							<div class="input-field col s3">
+								<label for="pesqSexo" class="active">Sexo</label> <select
+									class="browser-default" name="pesqSexo" id="pesqSexo">
+									<option value="" selected>--[Selecione]--</option>
+									<option value="MASCULINO" th:text="Masculino" th:selected="${sexoPesquisa == 'MASCULINO'}"/>
+									<option value="FEMININO" th:text="Feminino" th:selected="${sexoPesquisa == 'FEMININO'}"/>
+								</select>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="input-field col s12">
+								<input class="btn waves-effect waves-light" type="submit"
+									value="Pesquisar"> <a
+									class="btn waves-effect waves-light" href="/listapessoas">Listar
+									Pessoas</a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</fieldset>
+
+		<table th:if="${pessoas.totalElements > 0}" class="striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nome</th>
+					<th>Sobrenome</th>
+					<th>Idade</th>
+					<th>Editar</th>
+					<th>Excluir</th>
+				</tr>
+			</thead>
+			<tr th:each="pessoa : ${pessoas}">
+				<td th:text="${pessoa.id}"></td>
+				<td><a
+					th:href="@{/telefones/{idpessoa}(idpessoa = ${pessoa.id})}"><span
+						th:text="${pessoa.nome}"></span></a></td>
+				<td th:text="${pessoa.sobrenome}"></td>
+				<td th:text="${pessoa.idade}"></td>
+				<td><a
+					th:href="@{/editarpessoa/{idpessoa}(idpessoa = ${pessoa.id})}">Editar</a></td>
+				<td><a
+					th:href="@{/excluirpessoa/{idpessoa}(idpessoa = ${pessoa.id})}">Excluir</a></td>
+			</tr>
+		</table>
+		
+		<div th:if="${pessoas.totalElements > 0}" class="row rodape-paginacao">
+			<center>
+				
+				<span th:if="${pessoas.hasPrevious()}">
+					<a th:href="@{/listapessoaspaginadas(page=${pessoas.number - 1}, size=${pessoas.size}, nomePesquisa=${nomePesquisa}, sexoPesquisa=${sexoPesquisa})}">< Anterior</a>
+				</span>
+				
+				<th:block th:each="i: ${#numbers.sequence(0, pessoas.totalPages - 1)}">
+					
+						<a th:if="${paginaAtual == i}" style="color:red" th:href="@{/listapessoaspaginadas(page=${i}, size=${pessoas.size}, nomePesquisa=${nomePesquisa}, sexoPesquisa=${sexoPesquisa})}">[[ ${i} + 1 ]]</a> 
+					
+						<a th:if="${paginaAtual != i}" th:href="@{/listapessoaspaginadas(page=${i}, size=${pessoas.size}, nomePesquisa=${nomePesquisa}, sexoPesquisa=${sexoPesquisa})}">[[ ${i} + 1 ]]</a> 
+				</th:block>
+				
+				<span th:if="${pessoas.hasNext()}">
+					<a th:href="@{/listapessoaspaginadas(page=${pessoas.number + 1}, size=${pessoas.size}, nomePesquisa=${nomePesquisa}, sexoPesquisa=${sexoPesquisa})}">Próxima ></a>
+				</span>
+			</center>
+		</div>
+		
+		<div th:if="${pessoas.totalElements == 0}" class="row rodape-paginacao">
+			<center>
+				<span>
+					Nenhum registro foi encontrado
+				</span>
+			</center>
+		</div>
+
+		<script type="text/javascript">
+			function limparForm() {
+				mensagemUsuario("Limpaaaando!");
+				document.getElementById("id").value = "";
+				document.getElementById("nome").value = "";
+				document.getElementById("sobrenome").value = "";
+				document.getElementById("idade").value = "";
+				document.getElementById("sexo").value = "";
+				document.getElementById("cargo").value = "";
+				//mensagemUsuario("TEste!");
+			}
+		</script>
+
+		<div th:replace="~{rodape :: javascripts}"></div>
+
+	</div>
+
+</body>
+</html>

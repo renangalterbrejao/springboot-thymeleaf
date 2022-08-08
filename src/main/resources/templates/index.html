@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{cabecalho :: cabecalho}"></div>
+<div th:replace="~{cabecalho :: estilos}"></div>
+
+<body>
+	  <h1>Ol&aacute; Spring Boot</h1>
+	<a th:href="@{/cadastropessoa}">Acessar Aplica&ccedil;&atilde;o</a>
+	
+	<div th:replace="~{rodape :: javascripts}"></div>
+	
+	<!--<script>
+		window.location.href = "/cadastropessoa";
+	</script>-->
+	
+</body>
+</html>

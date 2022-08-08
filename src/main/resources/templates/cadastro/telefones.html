@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{cabecalho :: cabecalho}"></div>
+<div th:replace="~{cabecalho :: estilos}"></div>
+
+<body>
+
+	<div class="container-principal">
+
+		<h3>Spring Boot + Thymeleaf + Material Design Lite</h3>
+		<br />
+
+		<div th:replace="~{fragmentos :: modalPadrao(${msg})}"></div>
+
+		<fieldset>
+
+			<legend>Dados da Pessoa</legend>
+			<a class="btn waves-effect waves-light" th:href="@{/cadastropessoa}">Voltar
+				para o Cadastro da Pessoa</a>
+			<div th:each="p : ${pessoaobj}">
+				<div class="row">
+					<p>
+						ID: <span th:text="${p.id}"></span>
+					</p>
+					<p>
+						Nome: <span th:text="${p.nome}"></span>
+					</p>
+					<p>
+						Sobrenome: <span th:text="${p.sobrenome}"></span>
+					</p>
+					<p>
+						Idade: <span th:text="${p.idade}"></span>
+					</p>
+					<p>
+						Cargo: <span th:text="${p.cargo.nome}"></span>
+					</p>
+				</div>
+			</div>
+
+			<fieldset>
+
+				<legend>Telefones</legend>
+				<div class="row">
+					<form
+						th:action="@{/addfonepessoa/{idpessoa}(idpessoa = ${pessoaobj.id})}"
+						method="post" class="col s12"
+						onsubmit="return validarCampos()? true : false;">
+						<div class="row">
+							<div class="input-field col s6">
+								<label class="active" for="numero">Número:</label> <input
+									type="text" id="numero" name="numero" class="validate"
+									onkeypress="mask(this, mphone);" onblur="mask(this, mphone);">
+							</div>
+							<!--  <div class="input-field col s6">
+						<label class="active" for="numero">Tipo:</label> <input
+							type="text" id="tipo" name="tipo" class="validate">
+					</div> -->
+							<div class="row">
+								<div class="input-field col s3">
+									<label for="tipoTelefone" class="active">Tipo</label> <select
+										class="browser-default" name="tipoTelefone" id="tipoTelefone">
+										<option value="" selected>--[Selecione]--</option>
+										<option th:each="tipoTelefone : ${tiposTelefones}"
+											th:value="${tipoTelefone.id}" th:text="${tipoTelefone.valor}">
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s12">
+									<input class="btn waves-effect waves-light" type="submit"
+										value="Adcionar">
+									<!-- <input type="hidden" id="idPessoa" name="idPessoa" th:field="${pessoaobj.id}"> -->
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</fieldset>
+
+		</fieldset>
+
+		<table class="striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Número</th>
+					<th>Tipo</th>
+					<th>Excluir</th>
+				</tr>
+			</thead>
+			<tr th:each="telefone : ${telefones}">
+				<td th:text="${telefone.id}"></td>
+				<td><span th:text="${telefone.numero}"></span></td>
+				<td th:text="${telefone.tipoTelefone.valor}"></td>
+				<td><a
+					th:href="@{/excluirtelefone/{idtelefone}(idtelefone = ${telefone.id})}">Excluir</a></td>
+				<!-- <td><a th:href = "@{/excluirtelefone?idtelefone=${telefone.id}&idpessoa=${pessoaobj.id}}">Excluir</a></td>
+			<td><a th:href="@{/excluirtelefone/(idtelefone = ${telefone.id}, idpessoa =${pessoaobj.id}) }">Excluir</a></td> -->
+			</tr>
+		</table>
+
+		<script>
+			function validarCampos() {
+
+				/*let numero = document.getElementById("numero").value;
+				let tipo = document.getElementById("tipo").value;
+				
+				if(numero != undefined && numero == ""){
+					alert("Por favor, preencha o número do telefone");
+					return false;
+				}
+				
+				if(tipo != undefined && tipo == ""){
+					alert("Por favor, preencha o tipo do telefone");
+					return false;
+				}*/
+
+				return true;
+			}
+		</script>
+
+		<div th:replace="~{rodape :: javascripts}"></div>
+
+	</div>
+
+</body>
+</html>

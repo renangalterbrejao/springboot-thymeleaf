@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+
+<div th:fragment="modalPadrao(mensagens)">
+	<div>
+		<div id="id01Modal" class="w3-modal">
+			<div class="w3-modal-content">
+				<div class="w3-container">
+					<span
+						onclick="document.getElementById('id01Modal').style.display='none'"
+						class="w3-button w3-display-topright botao-fechar-modal">X</span>
+					<div id="tituloModal" style="text-align:center" class="titulo-modal">
+						Aten&ccedil;&atilde;o!
+					</div>
+					<div id="mensagens" class="caixa-mensagens-modal">
+						<div th:each="m : ${mensagens}">
+							<span th:text="${m.mensagem}"></span>
+						</div>
+					</div>
+					<div class="botao-modal">
+						<input type="button" class="btn waves-effect waves-light"
+							onclick="document.getElementById('id01Modal').style.display='none'"
+							value="Fechar">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

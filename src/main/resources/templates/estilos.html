@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="geral">
+	<style type="text/css">
+	
+		body {
+			margin: 0 16px 0 16px;
+		}
+	
+		form input[type=submit] {
+			color: white;
+		}
+		
+		form input[type=button] {
+			color: white;
+		}
+		
+		.container-principal-login {
+			margin-left:35%;
+			margin-top:15%;
+		}
+		
+		.w3-modal{
+			z-index:3;
+			display:none;
+			padding-top:100px;
+			position:fixed;
+			left:0;
+			top:0;
+			width:100%;
+			height:100%;
+			overflow:auto;
+			background-color:rgb(0,0,0);
+			background-color:rgba(0,0,0,0.4)
+		}
+		
+		.w3-modal-content{
+			margin:auto;
+			background-color:#fff;
+			position:relative;
+			padding:0;
+			outline:0;
+			width:600px;
+			border-radius: 10px;
+		}
+		
+		.w3-container{
+			padding: 10px 16px 10px 16px;
+		}
+		
+		.w3-container:after,.w3-container:before{
+			content:"";
+			display:table;
+			clear:both;
+		}
+		
+		.botao-modal{
+			padding-top: 10px;
+			text-align: -webkit-center;
+		}
+		
+		.w3-button{
+			border:none;
+			display:inline-block;
+			padding:8px 16px;
+			vertical-align:middle;
+			overflow:hidden;
+			text-decoration:none;
+			color:inherit;
+			background-color:inherit;
+			text-align:center;
+			cursor:pointer;
+			white-space:nowrap;
+		}
+			
+		.w3-display-topright{
+			position:absolute;
+			right:0;top:0;
+		}
+		
+		.titulo-modal{
+			font-size: 20px;
+			font-weight: bold;
+		}
+		
+		.botao-fechar-modal{
+		    border-left: solid 1px darkgray;
+   			border-bottom: solid 1px darkgrey;
+   			border-radius: 5px;
+   			background-color: rgb(238, 232, 232);
+		}
+		
+		.caixa-mensagens-modal{
+			padding:20px 10px 10px 10px;
+			font-weight: bold;
+		}
+		
+		.row {
+		    margin-left: auto;
+		    margin-right: auto;
+		    margin-bottom: 0px;
+		}
+		
+		table {
+			margin-top: 20px;
+		}
+		
+		table th {
+			border: 1px solid grey;
+			text-align: left;
+		}
+		
+		.rodape-paginacao {
+			margin-top: 30px;
+			font-size: 16px;
+		}
+	</style>
+</div>

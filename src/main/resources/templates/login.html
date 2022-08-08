@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{cabecalho :: cabecalho}"></div>
+<div th:replace="~{cabecalho :: estilos}"></div>
+
+<body>
+
+	<div class="container-principal-login">
+	
+		<div th:replace="~{fragmentos :: modalPadrao(${msg})}"></div>
+
+		<h5>Acesso ao Sistema</h5>
+
+		<form th:action="@{/login}" method="post" class="col s12" id="formLogin">
+
+			<div class="row">
+				<div class="input-fiel col s6">
+					<label>Login</label> <input type="text" id="username" name="username" maxlength="30">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-fiel col s6">
+					<label>Senha</label> <input type="password" id="password" name="password" maxlength="30">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-fiel col s6">
+					<input name="logar" type="button" value="Acessar" onclick="verificarForm()"
+						class="btn waves-effect waves-light">
+				</div>
+			</div>
+			
+			<div id="errors" th:if="${(param.error != null) and (param.error[0] == 'true')}" style="margin-top: 15px; color:red">
+			    Usuário ou senha incorreta!
+			</div>
+			
+		</form>
+		
+		<script type="text/javascript">
+			function verificarForm() {
+				let username = document.getElementById("username").value;
+				let password = document.getElementById("password").value;
+				let formLogin = document.getElementById("formLogin");
+				
+				if(username == undefined || username == ''){
+					mensagemUsuario("Por favor, digite o login!");
+					return false;
+				}
+				
+				if(password == undefined || password == ''){
+					mensagemUsuario("Por favor, digite a senha!");
+					return false;
+				}
+				
+				formLogin.submit();
+			}
+		</script>
+
+		<div th:replace="~{rodape :: javascripts}"></div>
+
+	</div>
+
+</body>
+</html>
