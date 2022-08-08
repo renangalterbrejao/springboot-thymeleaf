@@ -160,6 +160,7 @@ public class CadastroPessoaService {
 
 		Optional<Telefone> telefone = buscarTelefonePorId(idTelefone);
 
+		//if (telefone.isEmpty()) {
 		if (telefone != null) {
 			telefoneRepository.deleteById(idTelefone);
 		} else {

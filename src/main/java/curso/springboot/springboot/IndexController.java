@@ -10,5 +10,10 @@ public class IndexController {
 	public String index() {
 		return "index";
 	}
-
+	
+	/*Alteração para o Heroku*/
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
 }
